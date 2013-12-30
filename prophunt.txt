@@ -1,7 +1,7 @@
 "Gamemode"
 {
 	"base"			"base"
-	"title" 		"Prop Hunt"
+	"title" 		"Prop Hunt with oscillation"
 	"version"		"3.0.0 BETA"
 	"maps" 			"^cs_"
 	"menusystem" 	"1"

@@ -19,6 +19,10 @@ BANNED_PROP_MODELS = {
 GAME_TIME = 30
 
 
+-- Number of seconds of camping allowed before oscillating props (Default: 5).
+OSCILLATION_WAIT = 30
+
+
 -- Number of seconds hunters are blinded/locked at the beginning of the map (Default: 30).
 HUNTER_BLINDLOCK_TIME = 30
 

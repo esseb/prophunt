@@ -176,7 +176,12 @@ function PlayerSpawn(pl)
 	pl:UnLock()
 	pl:ResetHull()
 	pl.last_taunt_time = 0
-	
+
+	if pl:Team() == TEAM_PROPS then
+		pl.last_position = pl:GetPos()
+		pl.last_move_time = CurTime()
+	end
+
 	umsg.Start("ResetHull", pl)
 	umsg.End()
 	
@@ -304,7 +309,28 @@ function GM:Think()
 				
 			pl.ph_prop:SetPos(pl:GetPos() - Vector(0, 0, pl.ph_prop:OBBMins().z))
 			pl.ph_prop:SetAngles(pl:GetAngles())
+		end
 		
+		-- Oscillate the prop if it hasn't moved in the last X seconds
+		if pl && pl:IsValid() && pl:Alive() && pl.ph_prop && pl.ph_prop:IsValid() && pl:Team() == TEAM_PROPS then
+			if pl:GetPos() == pl.last_position then
+				local camping_length = CurTime() - pl.last_move_time
+				local time_to_oscillation = OSCILLATION_WAIT - camping_length
+
+				if pl.next_oscillation_warning > 0 && time_to_oscillation < pl.next_oscillation_warning then
+					pl:ChatPrint("Oscillation begins in " .. pl.next_oscillation_warning .." seconds.")
+					pl.next_oscillation_warning = pl.next_oscillation_warning - 1
+				end
+
+				-- Oscillate!
+				if time_to_oscillation <= 0 then
+					pl.ph_prop:SetPos(pl:GetPos() + Vector(math.random(-1, 1), math.random(-1, 1), 0))
+				end
+			else
+				pl.next_oscillation_warning = 5
+				pl.last_position = pl:GetPos()
+				pl.last_move_time = CurTime()
+			end
 		end
 	
 	end

@@ -1,3 +1,7 @@
+# Oscillation
+
+This is a fork of [Prop Hunt](https://github.com/andrewtheis/prophunt) with an added oscillation feature where props will start to oscillate if they have camped longer than 30 seconds.
+
 # Installation
 
 First, download the latest version by clicking the [download zip](https://github.com/andrewtheis/prophunt/archive/master.zip) button to the right. After downloading, extract the contents of the zip to the below directory. Restart Garry's Mod and you're all set!
