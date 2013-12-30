@@ -336,7 +336,7 @@ function GM:Think()
 				pl.last_position = pl:GetPos()
 				pl.last_move_time = CurTime()
 				
-				if pl.prop_osc_amp > 0
+				if pl.prop_osc_amp > 0 then
 					pl.prop_osc_amp = math.Max(0,pl.prop_osc_amp - 0.1*FrameTime())
 				end
 			end
