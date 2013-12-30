@@ -325,11 +325,13 @@ function GM:Think()
 
 				-- Oscillate!
 				if time_to_oscillation <= 0 then
-					pl.prop_osc_amp = math.Min(2, pl.prop_osc_amp + 0.05*FrameTime())
+					pl.prop_osc_amp = math.min(1, pl.prop_osc_amp + 0.025*FrameTime())
 				end
 				
-				if pl.prop_osc_amp > 0 then
-					pl.ph_prop:SetPos(pl:GetPos() + Vector(pl.prop_osc_amp*math.random(-1, 1), pl.prop_osc_amp*math.random(-1, 1), 0))
+				local osc_rate = 30*pl.prop_osc_amp*pl.prop_osc_amp
+				if pl.prop_osc_amp > 0 and math.random() < FrameTime()*osc_rate then
+					local actual_amp = 2*pl.prop_osc_amp*pl.prop_osc_amp
+					pl.ph_prop:SetPos(pl:GetPos() + Vector(actual_amp*(2*math.random()-1), actual_amp*(2*math.random()-1), 0))
 				end
 			else
 				pl.next_oscillation_warning = 5
@@ -337,7 +339,7 @@ function GM:Think()
 				pl.last_move_time = CurTime()
 				
 				if pl.prop_osc_amp > 0 then
-					pl.prop_osc_amp = math.Max(0,pl.prop_osc_amp - 0.1*FrameTime())
+					pl.prop_osc_amp = math.max(0,pl.prop_osc_amp - 0.1*FrameTime())
 				end
 			end
 		end
