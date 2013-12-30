@@ -19,8 +19,12 @@ BANNED_PROP_MODELS = {
 GAME_TIME = 30
 
 
--- Number of seconds of camping allowed before oscillating props (Default: 5).
-OSCILLATION_WAIT = 30
+-- Number of seconds of camping allowed before oscillating props (Default: 20).
+CAMPING_MAX = 20
+
+
+-- Distance props need to move from the last camping spot before quivering stops (Default: 500).
+CAMPING_DISTANCE = 500
 
 
 -- Number of seconds hunters are blinded/locked at the beginning of the map (Default: 30).

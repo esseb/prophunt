@@ -178,6 +178,8 @@ function PlayerSpawn(pl)
 	pl.last_taunt_time = 0
 
 	if pl:Team() == TEAM_PROPS then
+		pl.quivering = false
+		pl.next_oscillation_warning = 5
 		pl.last_position = pl:GetPos()
 		pl.last_move_time = CurTime()
 		pl.prop_osc_amp = 0
@@ -314,16 +316,20 @@ function GM:Think()
 		
 		-- Oscillate the prop if it hasn't moved in the last X seconds
 		if pl && pl:IsValid() && pl:Alive() && pl.ph_prop && pl.ph_prop:IsValid() && pl:Team() == TEAM_PROPS then
-			if pl:GetPos() == pl.last_position then
+			local distance_from_camping_spot = (pl:GetPos() - pl.last_position):Length()
+			if distance_from_camping_spot < CAMPING_DISTANCE then
+				pl.quivering = true
 				local camping_length = CurTime() - pl.last_move_time
-				local time_to_oscillation = OSCILLATION_WAIT - camping_length
+				local time_to_oscillation = CAMPING_MAX - camping_length
 
 				if pl.next_oscillation_warning > 0 && time_to_oscillation < pl.next_oscillation_warning then
-					pl:ChatPrint("Oscillation begins in " .. pl.next_oscillation_warning .." seconds.")
+					if pl.next_oscillation_warning == 5 then
+						pl:ChatPrint("You will begin quivering in ...")
+					end
+					pl:ChatPrint(pl.next_oscillation_warning .." seconds.")
 					pl.next_oscillation_warning = pl.next_oscillation_warning - 1
 				end
 
-				-- Oscillate!
 				if time_to_oscillation <= 0 then
 					pl.prop_osc_amp = math.min(1, pl.prop_osc_amp + 0.025*FrameTime())
 				end
@@ -334,13 +340,15 @@ function GM:Think()
 					pl.ph_prop:SetPos(pl:GetPos() + Vector(actual_amp*(2*math.random()-1), actual_amp*(2*math.random()-1), 0))
 				end
 			else
+				if pl.quivering then
+					pl:ChatPrint("You feel safe again and stop quivering.")
+				end
+				
+				pl.quivering = false
 				pl.next_oscillation_warning = 5
 				pl.last_position = pl:GetPos()
 				pl.last_move_time = CurTime()
-				
-				if pl.prop_osc_amp > 0 then
-					pl.prop_osc_amp = math.max(0,pl.prop_osc_amp - 0.1*FrameTime())
-				end
+				pl.prop_osc_amp = 0
 			end
 		end
 	
