@@ -343,7 +343,7 @@ function GM:Think()
 					local osc_rate = 30*pl.prop_osc_amp*pl.prop_osc_amp
 					if pl.prop_osc_amp > 0 and math.random() < FrameTime()*osc_rate then
 						local actual_amp = 2*pl.prop_osc_amp*pl.prop_osc_amp
-						pl.ph_prop:SetPos(pl:GetPos() + Vector(actual_amp*(2*math.random()-1), actual_amp*(2*math.random()-1), 0))
+						pl.ph_prop:SetPos(pl:GetPos() + Vector(actual_amp*(2*math.random()-1), actual_amp*(2*math.random()-1), 0) - Vector(0, 0, pl.ph_prop:OBBMins().z))
 					end
 				end
 			else
