@@ -347,7 +347,8 @@ function GM:Think()
 					end
 				end
 			else
-				if pl.quivering then
+				-- Only show the message if the prop has started quivering and at least one warning has been shown
+				if pl.quivering && pl.next_oscillation_warning < 5 then
 					pl:ChatPrint("You feel safe again and stop quivering.")
 				end
 
