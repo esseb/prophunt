@@ -180,6 +180,7 @@ function PlayerSpawn(pl)
 	if pl:Team() == TEAM_PROPS then
 		pl.last_position = pl:GetPos()
 		pl.last_move_time = CurTime()
+		pl.prop_osc_amp = 0
 	end
 
 	umsg.Start("ResetHull", pl)
@@ -324,12 +325,20 @@ function GM:Think()
 
 				-- Oscillate!
 				if time_to_oscillation <= 0 then
-					pl.ph_prop:SetPos(pl:GetPos() + Vector(math.random(-1, 1), math.random(-1, 1), 0))
+					pl.prop_osc_amp = math.Min(2, pl.prop_osc_amp + 0.05*FrameTime())
+				end
+				
+				if pl.prop_osc_amp > 0 then
+					pl.ph_prop:SetPos(pl:GetPos() + Vector(pl.prop_osc_amp*math.random(-1, 1), pl.prop_osc_amp*math.random(-1, 1), 0))
 				end
 			else
 				pl.next_oscillation_warning = 5
 				pl.last_position = pl:GetPos()
 				pl.last_move_time = CurTime()
+				
+				if pl.prop_osc_amp > 0
+					pl.prop_osc_amp = math.Max(0,pl.prop_osc_amp - 0.1*FrameTime())
+				end
 			end
 		end
 	
