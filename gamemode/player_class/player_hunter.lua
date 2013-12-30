@@ -32,6 +32,7 @@ function PLAYER:Loadout()
 	self.Player:GiveAmmo(64, "Buckshot")
 	self.Player:GiveAmmo(255, "SMG1")
 	
+	self.Player:Give("weapon_crowbar")
 	self.Player:Give("weapon_shotgun")
 	self.Player:Give("weapon_smg1")
 	self.Player:Give("item_ar2_grenade")
